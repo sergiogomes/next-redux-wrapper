@@ -1,42 +1,35 @@
 import React from "react";
+import { connect } from "react-redux";
+import {
+  decrementCounter,
+  incrementCounter,
+} from "../redux/actions/counterActions";
 
 class App extends React.Component {
+  static getInitialProps({ store }) {}
+
   constructor(props) {
     super(props);
-
-    //Initialise state
-    this.state = {
-      counter: 0,
-    };
   }
-
-  //Updates the counter in state by +1
-  incrementCounter = () => {
-    this.setState((prevState) => {
-      this.setState({
-        counter: prevState.counter + 1,
-      });
-    });
-  };
-
-  //Updates the counter in state by  -1
-  decrementCounter = () => {
-    this.setState((prevState) => {
-      this.setState({
-        counter: prevState.counter - 1,
-      });
-    });
-  };
 
   render() {
     return (
       <div>
-        <button onClick={this.incrementCounter}>Increment</button>
-        <button onClick={this.decrementCounter}>Decrement</button>
-        <h1>{this.state.counter}</h1>
+        <button onClick={this.props.incrementCounter}>Increment</button>
+        <button onClick={this.props.decrementCounter}>Decrement</button>
+        <h1>{this.props.counter}</h1>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  counter: state.counter.value,
+});
+
+const mapDispatchToProps = {
+  incrementCounter: incrementCounter,
+  decrementCounter: decrementCounter,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
